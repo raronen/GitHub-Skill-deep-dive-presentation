@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Deep Dive: SUBJECT_TITLE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme-link" />
+
+<style>
+  :root {
+    --deck-accent: #2f6fed;
+  }
+  .reveal { font-size: 30px; }
+  .reveal h1, .reveal h2, .reveal h3 { color: var(--deck-accent); text-transform: none; }
+  .reveal section { text-align: left; }
+  .reveal section.center, .reveal section.title-slide { text-align: center; }
+  .reveal ul { display: block; }
+  .reveal li { margin-bottom: 0.35em; }
+  .why-box {
+    border-left: 4px solid var(--deck-accent);
+    background: #f2f6ff;
+    padding: 0.5em 0.9em;
+    margin-top: 0.6em;
+    font-size: 0.85em;
+  }
+  .why-box b { color: var(--deck-accent); }
+  .source-links {
+    font-size: 0.48em;
+    color: #666;
+    margin-top: 0.7em;
+    overflow-wrap: anywhere;
+  }
+  .source-links a { color: var(--deck-accent); }
+  .mermaid-wrap { position: relative; }
+  .mermaid-edit-toggle {
+    font-size: 0.5em;
+    color: #888;
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline-block;
+    margin-top: 4px;
+  }
+  .mermaid-source {
+    display: none;
+    width: 100%;
+    min-height: 140px;
+    font-family: 'Cascadia Code', Consolas, monospace;
+    font-size: 0.45em;
+    box-sizing: border-box;
+  }
+
+  /* ---- Editing toolbar ---- */
+  #deck-toolbar {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    z-index: 1000;
+    display: flex;
+    gap: 6px;
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+  }
+  #deck-toolbar button {
+    background: #2f6fed;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  #deck-toolbar button.secondary { background: #555; }
+  #deck-toolbar button:hover { opacity: 0.85; }
+
+  body.edit-mode .reveal section [data-editable] { outline: 1px dashed rgba(47,111,237,0.5); }
+  body.edit-mode .reveal section [data-editable]:focus { outline: 2px solid var(--deck-accent); background: #fffef2; }
+
+  .slide-controls {
+    display: none;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  body.edit-mode .slide-controls { display: flex; }
+  .slide-controls button {
+    font-size: 11px;
+    padding: 3px 7px;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  #add-slide-bar {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+  }
+  body.edit-mode #add-slide-bar { display: block; }
+</style>
+</head>
+<body>
+
+<div id="deck-toolbar">
+  <button id="toggle-edit">Edit Mode: OFF</button>
+  <button id="export-html" class="secondary">Export HTML</button>
+</div>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ============ SLIDE: TITLE ============ -->
+    <section class="title-slide">
+      <h1 data-editable>SUBJECT_TITLE</h1>
+      <h3 data-editable>One-line scope of this deep dive</h3>
+      <p data-editable style="font-size:0.6em;color:#888;">Prepared for team transition &middot; Draft/LAQS &middot; Edit date here</p>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: EXECUTIVE SUMMARY ============ -->
+    <section>
+      <h2 data-editable>Executive Summary</h2>
+      <ul data-editable>
+        <li>What this subsystem/flow is, in one sentence</li>
+        <li>Why it exists / what problem it solves</li>
+        <li>Who owns it and where it lives in the repo</li>
+        <li>Top 2-3 things the next team must know</li>
+      </ul>
+      <aside class="notes" data-editable>
+        Speaker notes: expand on background, links to source files (file:line),
+        and any context that doesn't belong on the slide itself.
+      </aside>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure source link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: CONCEPTS / GLOSSARY ============ -->
+    <section>
+      <h2 data-editable>Concepts &amp; Glossary</h2>
+      <ul data-editable>
+        <li><b>Term A</b> — definition</li>
+        <li><b>Term B</b> — definition</li>
+        <li><b>Term C</b> — definition</li>
+      </ul>
+      <div class="why-box" data-editable><b>Why it matters:</b> define terms before diagrams reference them.</div>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure glossary/design link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: ARCHITECTURE ============ -->
+    <section>
+      <h2 data-editable>Architecture</h2>
+      <div class="mermaid-wrap">
+        <pre class="mermaid" data-editable>
+graph TD
+  Client[Client] --> API[API Layer]
+  API --> Core[Core Component]
+  Core --> Dep1[(Dependency 1)]
+  Core --> Dep2[(Dependency 2)]
+        </pre>
+        <a class="mermaid-edit-toggle">Edit diagram</a>
+        <textarea class="mermaid-source"></textarea>
+      </div>
+      <div class="why-box" data-editable><b>Why this shape:</b> explain ownership boundaries and why each component is separate.</div>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure architecture/source link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: E2E SEQUENCE ============ -->
+    <section>
+      <h2 data-editable>End-to-End Flow</h2>
+      <div class="mermaid-wrap">
+        <pre class="mermaid" data-editable>
+sequenceDiagram
+  participant C as Client
+  participant A as API Layer
+  participant Co as Core Component
+  participant D as Dependency
+  C->>A: Request
+  A->>Co: Validate + route
+  Co->>D: Call dependency
+  D-->>Co: Response
+  Co-->>A: Result
+  A-->>C: Response
+        </pre>
+        <a class="mermaid-edit-toggle">Edit diagram</a>
+        <textarea class="mermaid-source"></textarea>
+      </div>
+      <aside class="notes" data-editable>Call out sync vs async hops, timeouts, retries.</aside>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure request-flow link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: DATA FLOW ============ -->
+    <section>
+      <h2 data-editable>Data Flow</h2>
+      <div class="mermaid-wrap">
+        <pre class="mermaid" data-editable>
+flowchart LR
+  In[Input shape] -->|transform 1| Mid[Intermediate shape]
+  Mid -->|transform 2| Out[Output shape]
+        </pre>
+        <a class="mermaid-edit-toggle">Edit diagram</a>
+        <textarea class="mermaid-source"></textarea>
+      </div>
+      <div class="why-box" data-editable><b>Why:</b> explain why each transform is necessary (validation, enrichment, redaction, etc).</div>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure data-contract link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: COMPONENT DEEP DIVE ============ -->
+    <section>
+      <h2 data-editable>Component Deep Dive: NAME</h2>
+      <ul data-editable>
+        <li><b>Responsibility:</b> what it does</li>
+        <li><b>Why it exists:</b> what breaks without it</li>
+        <li><b>Inputs / Outputs:</b> shapes and contracts</li>
+        <li><b>Key config:</b> file/flag references</li>
+        <li><b>Gotchas:</b> known edge cases</li>
+      </ul>
+      <aside class="notes" data-editable>Cite file:line references here.</aside>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure component source link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: FAILURE MODES ============ -->
+    <section>
+      <h2 data-editable>Failure Modes &amp; Edge Cases</h2>
+      <ul data-editable>
+        <li>Failure mode 1 — symptom, telemetry signal, mitigation</li>
+        <li>Failure mode 2 — symptom, telemetry signal, mitigation</li>
+      </ul>
+      <div class="source-links" data-editable><b>Sources:</b> <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">Verified msazure telemetry/runbook link</a></div>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE: REFERENCES ============ -->
+    <section>
+      <h2 data-editable>References &amp; Further Reading</h2>
+      <ul data-editable>
+        <li>Source: path/to/file.ts</li>
+        <li>Related skill: .github/skills/...</li>
+        <li>Related instructions: .github/instructions/...</li>
+      </ul>
+      <p class="source-links" data-editable><b>Link policy:</b> replace every placeholder with a verified, clickable <a href="https://msazure.visualstudio.com/" target="_blank" rel="noopener">msazure</a> source link where one exists.</p>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div id="add-slide-bar">
+  <button id="add-slide">+ Add Slide</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+  const deck = new Reveal({
+    hash: true,
+    slideNumber: true,
+    width: 1280,
+    height: 800,
+    margin: 0.06,
+    plugins: []
+  });
+
+  function renderAllMermaid() {
+    document.querySelectorAll('pre.mermaid').forEach((el, i) => {
+      if (!el.dataset.raw) el.dataset.raw = el.textContent;
+      el.removeAttribute('data-processed');
+    });
+    mermaid.run({ querySelector: 'pre.mermaid' }).catch(console.error);
+  }
+
+  deck.initialize().then(() => {
+    renderAllMermaid();
+  });
+
+  // ---------------- Edit mode ----------------
+  const toggleBtn = document.getElementById('toggle-edit');
+  toggleBtn.addEventListener('click', () => {
+    const on = document.body.classList.toggle('edit-mode');
+    toggleBtn.textContent = 'Edit Mode: ' + (on ? 'ON' : 'OFF');
+    if (on) deck.configure({ keyboard: false, touch: false });
+    else deck.configure({ keyboard: true, touch: true });
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      if (el.classList.contains('mermaid')) return; // diagrams edited via source textarea
+      el.contentEditable = on ? 'true' : 'false';
+    });
+  });
+
+  // ---------------- Mermaid inline source editing ----------------
+  document.querySelectorAll('.mermaid-wrap').forEach(wrap => {
+    const pre = wrap.querySelector('pre.mermaid');
+    const toggle = wrap.querySelector('.mermaid-edit-toggle');
+    const textarea = wrap.querySelector('.mermaid-source');
+    textarea.value = pre.textContent.trim();
+
+    toggle.addEventListener('click', () => {
+      const showing = textarea.style.display === 'block';
+      textarea.style.display = showing ? 'none' : 'block';
+      pre.style.display = showing ? 'block' : 'none';
+      toggle.textContent = showing ? 'Edit diagram' : 'Rendering… click again to preview';
+    });
+
+    textarea.addEventListener('blur', () => {
+      const src = textarea.value;
+      pre.textContent = src;
+      pre.removeAttribute('data-processed');
+      pre.style.display = 'block';
+      textarea.style.display = 'none';
+      toggle.textContent = 'Edit diagram';
+      mermaid.run({ nodes: [pre] }).catch(console.error);
+      deck.layout();
+    });
+  });
+
+  // ---------------- Slide add/duplicate/delete ----------------
+  function wireSlideControls(section) {
+    const dup = section.querySelector('.dup-slide');
+    const del = section.querySelector('.del-slide');
+    if (dup) dup.addEventListener('click', () => {
+      const clone = section.cloneNode(true);
+      section.parentNode.insertBefore(clone, section.nextSibling);
+      wireSlideControls(clone);
+      wireMermaidInSlide(clone);
+      deck.sync();
+      renderAllMermaid();
+    });
+    if (del) del.addEventListener('click', () => {
+      if (document.querySelectorAll('.slides > section').length <= 1) return;
+      section.remove();
+      deck.sync();
+    });
+  }
+  function wireMermaidInSlide(section) {
+    section.querySelectorAll('.mermaid-wrap').forEach(wrap => {
+      const pre = wrap.querySelector('pre.mermaid');
+      const toggle = wrap.querySelector('.mermaid-edit-toggle');
+      const textarea = wrap.querySelector('.mermaid-source');
+      textarea.value = pre.textContent.trim();
+      toggle.addEventListener('click', () => {
+        const showing = textarea.style.display === 'block';
+        textarea.style.display = showing ? 'none' : 'block';
+        pre.style.display = showing ? 'block' : 'none';
+      });
+      textarea.addEventListener('blur', () => {
+        pre.textContent = textarea.value;
+        pre.removeAttribute('data-processed');
+        pre.style.display = 'block';
+        textarea.style.display = 'none';
+        mermaid.run({ nodes: [pre] }).catch(console.error);
+        deck.layout();
+      });
+    });
+  }
+  document.querySelectorAll('.slides > section').forEach(wireSlideControls);
+
+  document.getElementById('add-slide').addEventListener('click', () => {
+    const section = document.createElement('section');
+    section.innerHTML = `
+      <h2 data-editable contenteditable="true">New Slide</h2>
+      <ul data-editable contenteditable="true"><li>Point one</li></ul>
+      <div class="slide-controls">
+        <button class="dup-slide">Duplicate</button>
+        <button class="del-slide">Delete</button>
+      </div>`;
+    document.querySelector('.slides').appendChild(section);
+    wireSlideControls(section);
+    deck.sync();
+  });
+
+  // ---------------- Export current state as standalone HTML ----------------
+  document.getElementById('export-html').addEventListener('click', () => {
+    const clone = document.documentElement.cloneNode(true);
+    // Strip contenteditable/outline artifacts and toolbar for a clean export,
+    // but keep everything else (including scripts) so the export re-opens as
+    // a fully working, re-editable deck.
+    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+    clone.classList.remove('edit-mode');
+    const toolbarClone = clone.querySelector('#toggle-edit');
+    if (toolbarClone) toolbarClone.textContent = 'Edit Mode: OFF';
+
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const titleText = (document.title || 'deep-dive').replace(/[^a-z0-9\-]+/gi, '-');
+    a.href = url;
+    a.download = titleText + '.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
