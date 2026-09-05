@@ -85,9 +85,43 @@ transformation, branch, concept, or failure mode. Never compress a deep dive
 to a target count.
 
 The HTML must support in-browser editing: Edit Mode makes text contenteditable,
-Mermaid source can be edited and re-rendered, slides can be added/duplicated/
-deleted, and Export HTML downloads the edited deck as a new re-editable file.
-Explain these controls after delivering the deck.
+Mermaid source can be edited and re-rendered, and slides can be added/duplicated/
+deleted. Include a prominent Save HTML control that uses the File System Access
+API to choose a file once, persist the file handle in IndexedDB when supported,
+and overwrite that file on later saves after permission is granted. Save must
+serialize the complete current deck as a standalone, re-editable HTML file,
+including text edits, slide changes, and editable Mermaid source. Show explicit
+save success, cancellation, and failure status; never silently claim success.
+Keep Export HTML as a fallback that downloads a new re-editable file when direct
+save is unavailable. Explain these controls after delivering the deck.
+
+Use a presentation-first, fixed-viewport layout matching the established Draft
+KT deck style:
+
+- Render exactly one Reveal slide at a time; never present slides as a vertically
+  scrolling document.
+- Bundle the pinned Reveal.js CSS/JavaScript and Mermaid JavaScript into the HTML
+  instead of depending on CDN loading. Embedded Copilot browser canvases may
+  block external scripts; a missing Reveal runtime degrades into a long scrolling
+  page with nonfunctional navigation.
+- Set `html`, `body`, and `.reveal` to the full viewport and hide page overflow.
+- Use Reveal's native bottom-right previous/next arrow controls with faded back
+  arrows, a progress bar, linear navigation, and keyboard navigation.
+- Keep the editing toolbar fixed at the top-right and the add-slide control fixed
+  near the bottom edge so neither participates in document flow.
+- Size slide content to fit the 1280x800 stage at narrow embedded-canvas widths.
+  Prefer responsive native HTML/CSS diagrams over unstable or cropped Mermaid
+  layouts when a diagram does not fit.
+- Before delivery, verify that both navigation arrows change slides, the browser
+  page has no vertical scrollbar, and the deck remains usable in Edit Mode.
+
+When opening a deck in an embedded Copilot browser canvas, direct browser file
+writes may be blocked. In that case, use the sibling `deck_save_server.py`:
+start it detached on `127.0.0.1` with the deck path, an available port, and a
+fresh random token, then open `http://127.0.0.1:<port>/?token=<token>` in the
+canvas. The template detects that URL and Save HTML posts the serialized deck
+to the localhost-only server, which atomically overwrites only the configured
+file. Never reuse or expose the token outside that local URL.
 
 Do not fabricate facts, endpoints, ownership, or source links. Mark anything
 unverified as TODO and keep the deck focused on the requested subject.
